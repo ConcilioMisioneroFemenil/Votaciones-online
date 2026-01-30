@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sistema de Votación</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
+    background:#b40505 url("https://i.postimg.cc/prQshs3J/logo-cmf.png") repeat fixed;
+    background-size:500px;
+}
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(180,5,5,.92);
+    z-index:-1;
+}
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+    background:#d91313;
+}
+.hero img{height:150px}
+.hero-center{text-align:center}
+
+.container{
+    max-width:900px;
+    margin:30px auto;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+.card{
+    background:white;
+    color:#333;
+    padding:22px;
+    border-radius:14px;
+}
+.instructions{
+    margin-bottom:20px;
+    font-size:18px;
+    color:#333;
+}
+label{
+    display:flex;
+    align-items:center;
+    font-size:22px; /* texto más grande */
+    margin-bottom:28px; /* más espacio entre opciones */
+}
+input[type=radio]{
+    width:36px; /* círculo más grande */
+    height:36px;
+    margin-right:20px;
+    accent-color:#d81e59;
+    flex-shrink:0;
+}
+button{
+    width:100%;
+    padding:18px;
+    font-size:22px;
+    font-weight:bold;
+    border:none;
+    border-radius:10px;
+    background:#d81e59;
+    color:white;
+    cursor:pointer;
+}
+.result{margin-bottom:18px}
+.bar{
+    background:#eee;
+    height:18px;
+    border-radius:10px;
+    overflow:hidden;
+}
+.fill{height:100%;width:0;transition:.4s}
+#barA{background:#ff6b6b}
+#barB{background:#feca57}
+#barC{background:#54a0ff}
+#barD{background:#1dd1a1}
+#barE{background:#ff9ff3}
+#barF{background:#576574}
+#barG{background:#00d2d3}
+
+.message{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#d81e59;
+}
+footer{text-align:center;margin:30px 0;font-size:14px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .hero{flex-direction:column;gap:12px;}
+    .hero img{height:120px;}
+    .hero-center h1{font-size:34px;}
+    label{font-size:20px;margin-bottom:36px;}
+    input[type=radio]{width:32px;height:32px;margin-right:16px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+    <img src="https://i.postimg.cc/prQshs3J/logo-cmf.png">
+    <div class="hero-center">
+        <h1 style="font-size:50px;">VOTACIONES CMF REGIÓN ORIENTE</h1>
+        <h3 style="font-size:20px;">Eleccion de cantante que nos representará en nuestra conferencia nacional</h3>
+    </div>
+    <img src="https://i.postimg.cc/prQshs3J/logo-cmf.png">
+</div>
+
+<div class="container">
+
+<div class="card">
+    Votos emitidos: <span id="voteCount">0</span> / 40
+</div>
+
+<div class="card" id="messageCard" style="display:none;">
+    <div class="message"></div>
+</div>
+
+<div class="card" id="voteCard">
+  <div class="instructions">
+    Para votar, selecciona un distrito y haz clic en <strong>VOTAR</strong>. ⚠️Solo se permite votar una vez por participante
+  </div>
+
+  <form id="votingForm">
+    <label><input type="radio" name="candidate" value="A" required> Distrito Izabal</label>
+    <label><input type="radio" name="candidate" value="B"> Distrito Zacapa</label>
+    <label><input type="radio" name="candidate" value="C"> Distrito Chiquimula </label>
+    <label><input type="radio" name="candidate" value="D"> Distrito Jalapa</label>
+    <label><input type="radio" name="candidate" value="E"> Distrito Jutiapa</label>
+    <label><input type="radio" name="candidate" value="F"> Distrito Jalpatagua</label>
+    <label><input type="radio" name="candidate" value="G"> Distrito Las Lisas</label>
+    <button type="submit">VOTAR</button>
+  </form>
+</div>
+
+<div class="card">
+<h2>Resultados</h2>
+
+
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Izabal</span>
+    <div class="bar"><div id="barA" class="fill"></div></div>
+    <small id="A" style="font-size:19px;">0%</small>
+  </div>
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Zacapa</span>
+    <div class="bar"><div id="barB" class="fill"></div></div>
+    <small id="B" style="font-size:19px;">0%</small>
+  </div>
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Chiquimula</span>
+    <div class="bar"><div id="barC" class="fill"></div></div>
+    <small id="C" style="font-size:19px;">0%</small>
+  </div>
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Jalapa</span>
+    <div class="bar"><div id="barD" class="fill"></div></div>
+    <small id="D" style="font-size:19px;">0%</small>
+  </div>
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Jutiapa</span>
+    <div class="bar"><div id="barE" class="fill"></div></div>
+    <small id="E" style="font-size:19px;">0%</small>
+  </div>
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Jalpatagua</span>
+    <div class="bar"><div id="barF" class="fill"></div></div>
+    <small id="F" style="font-size:19px;">0%</small>
+  </div>
+
+  <div class="result">
+    <span style="font-size:18px; font-weight:bold;">Distrito Las Lisas</span>
+    <div class="bar"><div id="barG" class="fill"></div></div>
+    <small id="G" style="font-size:19px;">0%</small>
+  </div>
+</div>
+
+<footer>Creado por Randall Noj Duarte</footer>
+
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBGDLD_k2k3F-PrjDnQvZfGfRgGQOYZDv8",
+  authDomain: "votaciones-viernes-30.firebaseapp.com",
+  databaseURL: "https://votaciones-viernes-30-default-rtdb.firebaseio.com",
+  projectId: "votaciones-viernes-30"
+});
+
+const db = firebase.database();
+const votesRef = db.ref("votes");
+const TOTAL = 40;
+
+// Elementos
+const votingForm = document.getElementById("votingForm");
+const voteCard = document.getElementById("voteCard");
+const messageCard = document.getElementById("messageCard");
+const voteCount = document.getElementById("voteCount");
+const bars = {A:barA,B:barB,C:barC,D:barD,E:barE,F:barF,G:barG};
+const labels = {A:A,B:B,C:C,D:D,E:E,F:F,G:G};
+
+// 🔄 Actualización en tiempo real
+votesRef.on("value", snap => {
+    const data = snap.val() || {};
+    const total = Object.values(data).reduce((a,b)=>a+b,0);
+    voteCount.innerText = total;
+
+    if(total === 0) localStorage.removeItem("voted");
+
+    for(let k in bars){
+        const p = total ? Math.round((data[k]||0)/total*100) : 0;
+        bars[k].style.width = p + "%";
+        labels[k].innerText = p + "%";
+    }
+
+    if(total >= TOTAL){
+        voteCard.style.display = "none";
+        messageCard.style.display = "block";
+        messageCard.querySelector(".message").innerText = "🚫 La votación ha finalizado (40 votos alcanzados)";
+    } else if(localStorage.getItem("voted")){
+        voteCard.style.display = "none";
+        messageCard.style.display = "block";
+        messageCard.querySelector(".message").innerText = "✅ Ya votaste, solo se permite votar una vez";
+    } else {
+        voteCard.style.display = "block";
+        messageCard.style.display = "none";
+    }
+});
+
+// 🗳️ Enviar voto sin recargar
+votingForm.addEventListener("submit", e => {
+    e.preventDefault();
+    if(localStorage.getItem("voted")) return;
+
+    votesRef.once("value").then(snap=>{
+        const total = Object.values(snap.val()||{}).reduce((a,b)=>a+b,0);
+        if(total >= TOTAL) return;
+
+        const opcion = votingForm.candidate.value;
+        votesRef.child(opcion).transaction(v=>(v||0)+1);
+
+        localStorage.setItem("voted","true");
+
+        voteCard.style.display = "none";
+        messageCard.style.display = "block";
+        messageCard.querySelector(".message").innerText = "✅ Ya votaste, solo se permite votar una vez";
+    });
+});
+</script>
+
+
+
+</body>
+</html>
